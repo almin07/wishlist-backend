@@ -7,6 +7,18 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// ✅ ДОБАВЬ ЭТО - корневой маршрут
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Wishlist Backend API',
+    version: '1.0.0',
+    endpoints: {
+      health: '/health',
+      test: '/test'
+    }
+  });
+});
+
 // Health check
 app.get('/health', (req, res) => {
   res.json({
