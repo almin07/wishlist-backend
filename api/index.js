@@ -7,14 +7,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ✅ ДОБАВЬ ЭТО - корневой маршрут
+// ✅ Корневой маршрут
 app.get('/', (req, res) => {
   res.json({
     message: 'Wishlist Backend API',
     version: '1.0.0',
     endpoints: {
       health: '/health',
-      test: '/test'
+      test: '/test',
+      auth: '/auth/verify'
     }
   });
 });
@@ -32,7 +33,36 @@ app.get('/test', (req, res) => {
   res.json({ message: 'Backend works!' });
 });
 
-// ✅ ВАРИАНТ 2: Явно указываем окружение
+// ✅ AUTH endpoint (ДОБАВЬ ЭТО)
+app.post('/auth/verify', (req, res) => {
+  try {
+    const { initData } = req.body;
+    
+    if (!initData) {
+      return res.status(400).json({ error: 'initData is required' });
+    }
+
+    // Для теста просто возвращаем успешный ответ
+    const user = {
+      id: Math.random(),
+      name: 'Test User',
+      username: 'testuser'
+    };
+
+    const token = 'test-token-' + Math.random();
+
+    res.json({
+      success: true,
+      user,
+      token
+    });
+  } catch (error) {
+    console.error('❌ Auth error:', error);
+    res.status(500).json({ error: 'Authentication failed' });
+  }
+});
+
+// ✅ Конфигурация окружения
 const PORT = process.env.PORT || 3001;
 const isProduction = process.env.VERCEL === '1' || process.env.NODE_ENV === 'production';
 
