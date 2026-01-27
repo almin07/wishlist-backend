@@ -102,6 +102,22 @@ app.get('/health', (req, res) => {
 app.get('/test', (req, res) => {
   res.json({ message: 'Backend works!' });
 });
+// Простой GET для тестирования
+app.get('/api/wishes', async (req, res) => {
+  try {
+    const { userId } = req.query;
+    
+    if (!userId) {
+      return res.status(400).json({ error: 'userId query parameter is required' });
+    }
+    
+    const result = await getUserWishes(parseInt(userId));
+    res.json(result);
+  } catch (error) {
+    console.error('❌ Get wishes error:', error);
+    res.status(500).json({ error: 'Failed to get wishes' });
+  }
+});
 
 // ============================================
 // AUTH
