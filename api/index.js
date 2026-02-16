@@ -119,6 +119,17 @@ app.get('/api/wishes', async (req, res) => {
   }
 });
 
+// ✅ POST /api/wishes - создать новое желание
+app.post('/api/wishes', async (req, res) => {
+  try {
+    const { userId, title, description, photo_url, link, price } = req.body;
+    
+    if (!userId || !title) {
+      return res.status(400).json({ error: 'userId and title are required' });
+    }
+    
+    const result
+    
 // ============================================
 // AUTH
 // ============================================
